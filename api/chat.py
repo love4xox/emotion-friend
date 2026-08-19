@@ -29,7 +29,7 @@ class handler(BaseHTTPRequestHandler):
             # 5. Google GenAI 클라이언트 초기화 및 콘텐츠 생성
             client = genai.Client(api_key=api_key)
             response = client.models.generate_content(
-                model='gemini-2.5-flash',
+                model='gemini-3.5-flash',
                 contents=user_message,
                 config={'system_instruction': SYSTEM_PROMPT}
             )
