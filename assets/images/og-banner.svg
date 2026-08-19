@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f6f9fc" />
+      <stop offset="50%" stop-color="#e8f1f8" />
+      <stop offset="100%" stop-color="#d6e6f2" />
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <text x="600" y="240" font-family="'Noto Sans KR', sans-serif" font-size="110" text-anchor="middle">☁️</text>
+  <text x="600" y="360" font-family="'Noto Sans KR', sans-serif" font-size="54" font-weight="bold" fill="#34485b" text-anchor="middle">마음친구 (MindMate)</text>
+  <text x="600" y="430" font-family="'Noto Sans KR', sans-serif" font-size="28" fill="#758390" text-anchor="middle">고립된 청년을 위한 따뜻한 감정 공감 AI 안식처</text>
+</svg>

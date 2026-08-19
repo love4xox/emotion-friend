@@ -1,0 +1,45 @@
+.nav-logo { font-weight: 700; font-size: 1.2rem; color: var(--text-title); cursor: pointer; }
+.nav-tabs { display: flex; list-style: none; gap: 6px; }
+.nav-tab-btn {
+    background: transparent; border: none; color: var(--text-muted);
+    font-size: 0.9rem; font-weight: 500; padding: 8px 14px;
+    border-radius: 20px; cursor: pointer; transition: all 0.25s;
+}
+.nav-tab-btn:hover { background-color: var(--primary-light); color: var(--primary-pastel); }
+.nav-tab-btn.active { background: var(--primary-pastel) !important; color: white !important; }
+
+textarea {
+    width: 100%; height: 160px; border: 1.5px solid var(--card-border);
+    border-radius: 16px; padding: 18px; font-size: 1rem;
+    resize: none; outline: none; font-family: inherit; color: var(--text-body);
+}
+textarea:focus { border-color: var(--primary-pastel); }
+
+.submit-btn {
+    width: 100%; padding: 16px; background: var(--primary-pastel);
+    color: white; border: none; border-radius: 14px;
+    font-size: 1.05rem; font-weight: 600; cursor: pointer; margin-top: 18px;
+    transition: all 0.2s;
+}
+.submit-btn:hover { background-color: var(--primary-hover); }
+.submit-btn:disabled { background-color: #c7d5df; cursor: not-allowed; }
+
+#response-area {
+    min-height: 150px; line-height: 1.9; background: #fbfdff;
+    border: 1px solid #e7f0f7; border-radius: 16px; padding: 24px;
+}
+
+.loading { color: var(--primary-pastel); font-weight: 600; text-align: center; padding: 30px 0; animation: pulse 1.5s infinite; }
+@keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+.music-list { list-style: none; display: flex; flex-direction: column; gap: 14px; }
+.music-item {
+    padding: 16px 20px; background: #f7fafc; border-radius: 14px;
+    border-left: 5px solid var(--primary-pastel); display: flex;
+    justify-content: space-between; align-items: center;
+}
+.music-link-btn {
+    background-color: #6195be; color: #ffffff; text-decoration: none;
+    font-size: 0.84rem; padding: 8px 14px; border-radius: 20px;
+}

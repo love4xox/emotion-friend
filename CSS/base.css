@@ -1,0 +1,28 @@
+:root {
+    --bg-gradient: linear-gradient(135deg, #f6f9fc 0%, #e8f1f8 50%, #f0f6fa 100%);
+    --primary-pastel: #7da5c4;
+    --primary-hover: #6892b3;
+    --primary-light: #eff6fb;
+    --text-title: #34485b;
+    --text-body: #3e4a54;
+    --text-muted: #758390;
+    --card-bg: rgba(255, 255, 255, 0.94);
+    --card-border: #dbe7f0;
+    --shadow-soft: 0 10px 30px rgba(125, 165, 196, 0.14);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Noto Sans KR', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--bg-gradient);
+    min-height: 100vh;
+    color: var(--text-body);
+    display: flex;
+    flex-direction: column;
+    line-height: 1.6;
+}
