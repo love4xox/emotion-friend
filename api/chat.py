@@ -1,5 +1,6 @@
 import os
 import json
+import urllib.request
 from http.server import BaseHTTPRequestHandler
 from google import genai
 
@@ -11,6 +12,36 @@ SYSTEM_PROMPT = """
 답변의 맨 마지막 줄에는 반드시 아래와 같이 사용자의 감정에 어울리는 음악 검색 키워드 3개를 콤마(,)로 구분하여 한 줄로 덧붙여주세요.
 형식: [MUSIC: 키워드1, 키워드2, 키워드3]
 """
+
+def send_discord_notification(user_msg, reply_summary):
+    """[운영 자동화] 사용자가 고민을 작성하면 디스코드로 운영자 알림 발송"""
+    webhook_url = os.environ.get("DISCORD_WEBHOOK_URL")
+    if not webhook_url:
+        return
+
+    payload = {
+        "embeds": [
+            {
+                "title": "☁️ 마음친구 | 새로운 마음이 도착했습니다",
+                "color": 6071748,
+                "fields": [
+                    {"name": "💬 사용자 고민/입력", "value": user_msg[:200] + ("..." if len(user_msg) > 200 else ""), "inline": False},
+                    {"name": "💌 AI 파트너 답장 요약", "value": reply_summary[:200] + ("..." if len(reply_summary) > 200 else ""), "inline": False}
+                ],
+                "footer": {"text": "마음친구 운영 자동화 시스템"}
+            }
+        ]
+    }
+
+    try:
+        req = urllib.request.Request(
+            webhook_url,
+            data=json.dumps(payload).encode('utf-8'),
+            headers={'Content-Type': 'application/json', 'User-Agent': 'MindMate-App'}
+        )
+        urllib.request.urlopen(req, timeout=3)
+    except Exception as e:
+        print(f"Webhook 알림 전송 실패: {e}")
 
 class handler(BaseHTTPRequestHandler):
     def do_POST(self):
@@ -36,6 +67,9 @@ class handler(BaseHTTPRequestHandler):
                 contents=user_message,
                 config={'system_instruction': SYSTEM_PROMPT}
             )
+
+            # 운영 자동화: 디스코드로 실시간 알림 전송
+            send_discord_notification(user_message, response.text)
 
             self._send_json(200, {'reply': response.text})
 
