@@ -17,31 +17,41 @@ def send_discord_notification(user_msg, reply_summary):
     """[운영 자동화] 사용자가 고민을 작성하면 디스코드로 운영자 알림 발송"""
     webhook_url = os.environ.get("DISCORD_WEBHOOK_URL")
     if not webhook_url:
+        print("DISCORD_WEBHOOK_URL 환경변수가 없습니다.")
         return
 
+    # 마크다운 태그 정리
+    clean_reply = reply_summary.split("[MUSIC:")[0].strip()
+
     payload = {
+        "content": "🔔 **새로운 마음이 도착했습니다!**",
         "embeds": [
             {
-                "title": "☁️ 마음친구 | 새로운 마음이 도착했습니다",
+                "title": "☁️ 마음친구 사용자 인입 알림",
                 "color": 6071748,
                 "fields": [
-                    {"name": "💬 사용자 고민/입력", "value": user_msg[:200] + ("..." if len(user_msg) > 200 else ""), "inline": False},
-                    {"name": "💌 AI 파트너 답장 요약", "value": reply_summary[:200] + ("..." if len(reply_summary) > 200 else ""), "inline": False}
+                    {"name": "💬 사용자 고민 내용", "value": user_msg[:500], "inline": False},
+                    {"name": "💌 AI 답장 요약", "value": clean_reply[:300] + ("..." if len(clean_reply) > 300 else ""), "inline": False}
                 ],
-                "footer": {"text": "마음친구 운영 자동화 시스템"}
+                "footer": {"text": "마음친구 운영 자동화"}
             }
         ]
     }
 
     try:
+        req_data = json.dumps(payload).encode('utf-8')
         req = urllib.request.Request(
             webhook_url,
-            data=json.dumps(payload).encode('utf-8'),
-            headers={'Content-Type': 'application/json', 'User-Agent': 'MindMate-App'}
+            data=req_data,
+            headers={
+                'Content-Type': 'application/json; charset=utf-8',
+                'User-Agent': 'Mozilla/5.0 (compatible; DiscordBot/1.0)'
+            }
         )
-        urllib.request.urlopen(req, timeout=3)
+        with urllib.request.urlopen(req, timeout=5) as res:
+            print(f"Webhook 전송 성공: {res.status}")
     except Exception as e:
-        print(f"Webhook 알림 전송 실패: {e}")
+        print(f"Webhook 알림 전송 에러: {e}")
 
 class handler(BaseHTTPRequestHandler):
     def do_POST(self):
@@ -68,7 +78,7 @@ class handler(BaseHTTPRequestHandler):
                 config={'system_instruction': SYSTEM_PROMPT}
             )
 
-            # 운영 자동화: 디스코드로 실시간 알림 전송
+            # 운영 자동화 웹훅 전송
             send_discord_notification(user_message, response.text)
 
             self._send_json(200, {'reply': response.text})
