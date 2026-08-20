@@ -1,4 +1,4 @@
-/* 🌙 다크 모드 변수 추가 */
+/* 🌙 다크 모드 변수 정의 */
 body.dark-mode {
     --bg-gradient: linear-gradient(135deg, #13181f 0%, #1a222c 50%, #202b38 100%);
     --primary-pastel: #5b8db5;
@@ -15,7 +15,7 @@ body.dark-mode {
     --shadow-soft: 0 10px 30px rgba(0, 0, 0, 0.4);
 }
 
-/* 기존 컴포넌트 코드 유지 */
+/* 1. 제출/요청 버튼 및 마이크로 인터랙션 */
 .submit-btn {
     width: 100%;
     padding: 16px;
@@ -47,6 +47,7 @@ body.dark-mode {
     box-shadow: none;
 }
 
+/* 2. 테마 전환(다크/라이트) 토글 버튼 */
 .theme-btn {
     background: var(--primary-light);
     border: 1px solid var(--card-border);
@@ -65,6 +66,7 @@ body.dark-mode {
     transform: scale(0.95);
 }
 
+/* 3. 음악 추천 아이템 카드 */
 .music-item {
     padding: 18px 20px;
     background: var(--box-item-bg);
@@ -108,6 +110,7 @@ body.dark-mode {
     transform: scale(0.95);
 }
 
+/* 4. 로딩 애니메이션 */
 .loading {
     color: var(--primary-pastel);
     font-weight: 600;
@@ -121,6 +124,7 @@ body.dark-mode {
     50% { opacity: 0.4; }
 }
 
+/* 5. 보관함 카드 및 삭제 버튼 */
 .saved-item {
     background: var(--box-item-bg);
     border: 1px solid var(--card-border);

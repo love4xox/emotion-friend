@@ -14,7 +14,7 @@
     --shadow-soft: 0 10px 30px rgba(125, 165, 196, 0.14);
 }
 
-/* 🌙 다크 모드 테마 */
+/* 🌙 다크모드 변수 */
 body.dark-mode {
     --bg-gradient: linear-gradient(135deg, #13181f 0%, #1a222c 50%, #202b38 100%);
     --primary-pastel: #5b8db5;
