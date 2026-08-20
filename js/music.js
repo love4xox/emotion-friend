@@ -1,33 +1,63 @@
-const MUSIC_DATABASE = {
-    sad: [
-        { title: "밤편지", artist: "IU", desc: "마음이 버거울 때 조용히 안아주는 노래" },
-        { title: "주저하는 연인들을 위해", artist: "잔나비", desc: "쓸쓸한 마음을 달래주는 따뜻한 멜로디" }
-    ],
-    lonely: [
-        { title: "별 보러 가자", artist: "적재", desc: "홀로 있는 밤에 편안한 온기를 주는 곡" },
-        { title: "Help", artist: "10cm", desc: "외로운 밤을 다정하게 채워주는 멜로디" }
-    ],
-    default: [
-        { title: "주저하는 연인들을 위해", artist: "잔나비", desc: "따뜻하고 감성적인 멜로디" },
-        { title: "밤편지", artist: "IU", desc: "혼자만의 시간에 어울리는 노래" }
-    ]
-};
-
-export function getRecommendedMusic(text) {
-    if (/(슬|울|힘들|지쳐|우울)/.test(text)) return MUSIC_DATABASE.sad;
-    if (/(외|혼자|고독|공허)/.test(text)) return MUSIC_DATABASE.lonely;
-    return MUSIC_DATABASE.default;
-}
-
-export function createMusicItemHTML(item) {
-    const query = encodeURIComponent(`${item.artist} ${item.title}`);
-    return `
-        <li class="music-item">
-            <div>
-                <div style="font-weight:600;">🎵 ${item.artist} - ${item.title}</div>
-                <div style="font-size:0.85rem; color:#758390;">${item.desc}</div>
-            </div>
-            <a href="https://www.youtube.com/results?search_query=${query}" target="_blank" rel="noopener noreferrer" class="music-link-btn">▶ YouTube 바로듣기</a>
-        </li>
-    `;
-}
+export function extractMusicKeywords(text) {
+    const musicRegex = /\[MUSIC:\s*([^\]]+)\]/i;
+    const match = text.match(musicRegex);
+  
+    let cleanText = text;
+    let keywords = [];
+  
+    if (match) {
+      cleanText = text.replace(musicRegex, '').trim();
+      keywords = match[1].split(',').map((k) => k.trim()).filter(Boolean);
+    }
+  
+    return { cleanText, keywords };
+  }
+  
+  export function saveRecommendedMusic(keywords) {
+    if (!keywords || keywords.length === 0) return;
+  
+    const existing = JSON.parse(localStorage.getItem('mindmate_music_list') || '[]');
+    const newItems = keywords.map((title) => ({
+      title,
+      date: new Date().toLocaleDateString('ko-KR'),
+      youtubeUrl: `https://www.youtube.com/results?search_query=${encodeURIComponent(title)}`,
+    }));
+  
+    // 중복 제거 후 최신 항목을 앞에 추가
+    const updated = [...newItems, ...existing.filter((e) => !keywords.includes(e.title))].slice(0, 10);
+    localStorage.setItem('mindmate_music_list', JSON.stringify(updated));
+  }
+  
+  export function renderMusicList(containerId = 'music-list-container') {
+    const container = document.getElementById(containerId);
+    if (!container) return;
+  
+    const list = JSON.parse(localStorage.getItem('mindmate_music_list') || '[]');
+  
+    if (list.length === 0) {
+      container.innerHTML = `
+        <div style="text-align:center; padding: 40px 20px; color: #888;">
+          <p style="font-size: 1.1rem; margin-bottom: 8px;">🎵 아직 추천받은 음악이 없어요.</p>
+          <p style="font-size: 0.9rem;">'마음쓰기'에서 답장을 받으면 여기에 맞춤 힐링 음악이 쌓입니다.</p>
+        </div>
+      `;
+      return;
+    }
+  
+    container.innerHTML = list
+      .map(
+        (item) => `
+      <div style="background: #ffffff; border-radius: 12px; padding: 16px 20px; margin-bottom: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); display: flex; justify-content: space-between; align-items: center;">
+        <div>
+          <h4 style="margin: 0 0 4px 0; font-size: 1rem; color: #333;">🎧 ${item.title}</h4>
+          <span style="font-size: 0.8rem; color: #999;">추천일: ${item.date}</span>
+        </div>
+        <a href="${item.youtubeUrl}" target="_blank" rel="noopener noreferrer" 
+           style="background: #eef2ff; color: #4f46e5; padding: 8px 14px; border-radius: 8px; font-size: 0.85rem; font-weight: bold; text-decoration: none;">
+          ▶ 재생하기
+        </a>
+      </div>
+    `
+      )
+      .join('');
+  }
