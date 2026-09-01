@@ -155,4 +155,4 @@ emotion-friend/
 ---
 
 ## 13. 배포 주소
-* 🌟 **MindMate AI 배포 링크**: [hhttps://mindmate-service.vercel.app/](https://mindmate-service.vercel.app/)
+* 🌟 **MindMate AI 배포 링크**: [https://mindmate-service.vercel.app/](https://mindmate-service.vercel.app/)
