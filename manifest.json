@@ -1,0 +1,15 @@
+{
+    "name": "마음친구 - 당신의 감정 파트너",
+    "short_name": "마음친구",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#f6f9fc",
+    "theme_color": "#7da5c4",
+    "icons": [
+      {
+        "src": "/assets/icons/favicon.png",
+        "sizes": "512x512",
+        "type": "image/png"
+      }
+    ]
+  }
